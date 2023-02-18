@@ -11,15 +11,15 @@ class Cliente{
         this.saldo = saldo;
     }
 
-    realizarDeposito(valor: number){
+    realizarDeposito(valor: number):void{
         this.saldo += valor;
     }
 
-    realizarSaque(valor: number){
+    realizarSaque(valor: number):void{
         this.saldo -= valor;
     }
 
-    retornaDados(){
+    retornaDados(): void{
         console.log("Nome: " + this.nome + "\nNúmero da conta: " + this.numeroConta + "\nSaldo: " + this.saldo)
     }
 
@@ -31,4 +31,10 @@ console.log(Fulano)
 Fulano.realizarDeposito(5)
 Fulano.retornaDados()
 Fulano.realizarSaque(2)
+Fulano.retornaDados()
+
+let Beltrano = new Cliente(234,123,"julinho", 400)
+Fulano.realizarDeposito(500)
+Fulano.retornaDados()
+Fulano.realizarSaque(80)
 Fulano.retornaDados()
