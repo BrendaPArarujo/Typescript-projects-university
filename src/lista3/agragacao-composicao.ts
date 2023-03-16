@@ -21,7 +21,7 @@ class Product{
         this.price = preco
     }
     toString():string{
-        return(`Nome: ${this.getName()} Price: ${this.getPrice}`)
+        return(`Nome: ${this.getName()} Price: ${this.getPrice()}`)
     }
 
 }
@@ -69,4 +69,32 @@ console.log(caritem2.toString())
 class ShoppingCart{
     private id: number
     private carItems: CarItem[]
+
+    constructor(id:number){
+        this.id = id
+        this.carItems = []
+    }
+
+    addCarItem(carItem: CarItem):void{
+        //insere um item de carrinho no carrinho de compras
+        this.carItems.push(carItem)
+    }
+    calculateTotalShoppingCart(){
+        let soma:number
+        soma = 0
+        this.carItems.forEach(element => {
+            return element.calculateTotalPrice() + soma 
+        });
+        return soma
+    }
+
+    toString(): string{
+        return `ID: ${this.id} Itens do carrinho: ${this.carItems} Preço: `
+    }
+
 }
+let shop1 = new ShoppingCart(1)
+shop1.addCarItem(caritem1)
+shop1.addCarItem(caritem2)
+console.log(shop1.toString())
+console.log(shop1.calculateTotalShoppingCart())
