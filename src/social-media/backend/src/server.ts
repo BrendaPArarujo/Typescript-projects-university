@@ -4,20 +4,20 @@ import Fastify from 'fastify'
 //Importando a dependencia zod
 import { z } from "zod";
 
-const app = Fastify()
-app.get("/Hello", () => {
+const server = Fastify()
+server.get("/Hello", () => {
     return "Hello world good night"
 })
-app.get("/teste", () => {
+server.get("/teste", () => {
     return "e agora 2"
 })
 
-app.get("/posts", async () =>{
+server.get("/posts", async () =>{
     const posts = await prisma.post.findMany()
     return posts
 })
 
-app.get("/posts/title/:title", async (request) =>{
+server.get("/posts/title/:title", async (request) =>{
     //define um objeto zod contendo o esquema de dados
     const titleParam = z.object({
         title: z.string()
@@ -37,6 +37,7 @@ app.get("/posts/title/:title", async (request) =>{
     return posts
 })
 
+
 //rota para criacao de um post -> verbo post
 server.post("/post", async (request) => {
 
@@ -47,27 +48,70 @@ server.post("/post", async (request) => {
     })
 
     //recupera o dado do front a partir do zod postBody
-    //converte o texto enviado pelo frontend apra as variaveis title, content e published
+    //converte o texto enviado pelo frontend para as variaveis title, content e published
 
-    const {title, body, published} = postBody.parse(request.body)
+    const {title, content, published} = postBody.parse(request.body)
 
-    await prisma.post.create({
+    const newPost = await prisma.post.create({
         data: {
             title: title,
             content: content,
             published: published
         }
     })
+    return newPost
 
 })
+//put quando preciso atualizar todos os campos do banco de dados
+//patch quando vou atualizar 1 campo do banco de dados
+server.patch("/post/content",async (request) => {
+   const contentBody = z.object({
+    id: z.number(),
+    content: z.string()
+   }) 
 
+const {id, content} = contentBody.parse(request.body)
+
+const postUpdated = await prisma.post.update({
+    where: {
+        id: id
+    },
+    data: {
+        content: content
+    }
+})
+return postUpdated
+})
+//rota para remover um post do banco de dados
+
+server.delete("/post/:id", async (request) => {
+  //const dados: any = request.params
+  //const id = parseInt(dados.id)
+    //criar objeto zod para esquema de dados
+
+    const idParam = z.object({
+        id: z.number()
+    })
+//recupera o id do frontend 
+    const {id} = idParam.parse(request.params)
+    //remove do banco
+    const idNumber = Number(id)
+    const postDelete = await prisma.post.delete({
+        where:{
+            id: id
+        }
+    })
+
+return postDelete
+
+})
 
 
 
 import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 
-app.listen({
+server.listen({
     port: 3333
 })
 .then(() => {
