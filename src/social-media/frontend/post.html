@@ -35,7 +35,35 @@
 
     </nav>
     <div class="container">
-        <table class="table">
+      <form>
+        <div class="mb-3 mt-4">
+          <label for="title" class="form-label">
+            Título
+          </label>
+          <input id="title" class="form-control w-50" type="text"/>
+        </div>
+        <div class="mb-3 mt-4">
+          <label for="content" class="form-label">
+            Conteúdo
+          </label>
+        <input id="content" class="form-control w-50" type="text"/>
+        </div>
+        <div class="mb-3 mt-4">
+          <input id="sim" name="publicado" class="form-check-input" type="radio"/>
+          <label for="Sim" class="form-label">
+            Publicado
+          </label>
+          
+        </div>
+        <div class="mb-3 mt-4">
+          <input id="nao" name="publicado" class="form-check-input" type="radio"/>
+          <label for="nao" class="form-label">
+            Não Publicado
+          </label>
+        </div>
+        <button type="button" class="btn btn-primary" onclick="confirmar()">Confirmar</button>
+      </form>
+        <table class="table mt-5">
             <thead>
               <tr>
                 <th scope="col">Id</th>
