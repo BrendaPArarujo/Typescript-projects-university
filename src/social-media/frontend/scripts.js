@@ -9,7 +9,7 @@ async function consultaPosts(){
     //percorre cada post presente em posts
     posts.forEach(post => {
         //acumula na variavel conteudoTabela os dados de cada post
-        conteudoTabela += `<tr> <td>${post.id}</td> <td>${post.title}</td> <td>${post.content}</td> <td>${post.published}</td> </tr>`
+        conteudoTabela += `<tr> <td>${post.id}</td> <td>${post.title}</td> <td>${post.content}</td> <td>${post.published}</td> <td> <button onclick="remover(${post.id})"> <i class="bi bi-trash"></i> </button> </td> <td> <i class="bi bi-pencil-square"></i> </td> </tr>`
     })
 
     //jogar os dados no html
@@ -40,5 +40,29 @@ async function confirmar(){
     })
 
     consultaPosts()
+
+}
+
+async function remover(id){
+
+    const confirmacao = confirm("Confirma exclusão do post?")
+    if(!confirmacao){
+        return
+    }else{
+    const post = await fetch(`http://localhost:3333/post/${id}`, {
+        method: 'DELETE'
+    })
+    .then(resposta => {
+        alert("Eliminado com sucesso")
+    })
+    .catch(error => {
+        alert("Erro na remoção")
+    })
+
+    consultaPosts()
+    }
+
+
+    
 
 }
