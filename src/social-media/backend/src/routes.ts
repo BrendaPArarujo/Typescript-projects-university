@@ -108,27 +108,24 @@ return postDelete
 
 })
 
-server.put('/post/:id', async (request) => { //o put atualiza 1 ou mais campos
+server.put('/post/', async (request) => { //o put atualiza 1 ou mais campos
     //cria um objeto zod para o parametro :id
-    const idParam = z.object({
-        id: z.string()
-    })
+
 
     //objeto zod para o corpo da requisição
     const putBody = z.object ({
+        "id": z.number(),
         "title": z.string(),
         "content": z.string()
     })
 
-    const {id} = idParam.parse(request.params)
-    const {title, content} = putBody.parse(request.body) //as variáveis title, content serão objetos (declarados no putBody) que receberam seus valores em request.body
+    const {title, id, content} = putBody.parse(request.body) //as variáveis title, content serão objetos (declarados no putBody) que receberam seus valores em request.body
 
 //atualiza no banco de dados
-    const idNumber = Number(id)
+
     const putPost = await prisma.post.updateMany({
         where: {
-            id: idNumber,
-            published: true
+            id: Number(id)
         },
         data: {
             title: title,
